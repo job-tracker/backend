@@ -4,7 +4,7 @@
   "description": "This will be used to help builders track and submit their work for seamless pay",
   "main": "index.js",
   "repository": "https://github.com/job-tracker/backend",
-  "author": "Rob Pedersen, Cedric Amaya, and Dan Sample",
+  "author": "Dan Sample",
   "license": "MIT",
   "scripts": {
     "db:migrate": "./node_modules/.bin/knex migrate:latest",
