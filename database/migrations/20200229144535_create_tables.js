@@ -16,10 +16,15 @@ exports.up = function(knex) {
     tbl.integer('floor');
     tbl.integer('unit_count');
     tbl.integer('outlet_count');
-    tbl.boolean('complete');
+    tbl.boolean('complete'); 
   })
 
-  .createTable()
+  .createTable("idf_rooms", tbl => {
+    tbl.increments();
+    tbl.integer('building_id').references('building.id');
+    tbl.string('images');
+    tbl.boolean('complete');
+  })
 };
 
 exports.down = function(knex) {
