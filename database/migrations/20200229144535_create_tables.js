@@ -1,6 +1,6 @@
 
 exports.up = function(knex) {
-  return knex.schema.creatTable('jobsite', tbl => {
+  return knex.schema.createTable('jobsite', tbl => {
     tbl.increments();
     tbl.string('name');
     tbl.string('address');
@@ -9,37 +9,53 @@ exports.up = function(knex) {
     tbl.boolean('complete');
   })
 
-  .creatTable('building', tbl => {
+  .createTable('building', tbl => {
     tbl.increments();
     tbl.integer('jobsite_id').references('jobsite.id');
     tbl.string('name');
-    tbl.integer('floor');
+    tbl.integer('floor_count');
     tbl.integer('unit_count');
     tbl.integer('outlet_count');
+    tbl.string('notes');
     tbl.boolean('complete'); 
   })
 
-  .createTable("idf_rooms", tbl => {
+  .createTable("floor", tbl => {
     tbl.increments();
     tbl.integer('building_id').references('building.id');
+    tbl.string('name');
+    tbl.integer('unit_count');
+    tbl.string('notes');
+    tbl.boolean('complete');
+  })
+  
+  .createTable("idf_room", tbl => {
+    tbl.increments();
+    tbl.integer('building_id').references('building.id');
+    tbl.integer('floor_id').references('floor.id');
+    tbl.string('location');
     tbl.string('images');
+    tbl.string('notes')
+    tbl.boolean('complete');
+  })
+
+  .createTable("unit", tbl => {
+    tbl.increments();
+    tbl.integer('building_id').references('building.id');
+    tbl.integer('floor_id').references('floor.id');
+    tbl.string('name');
+    tbl.integer('outlet_count');
+    tbl.string('notes');
     tbl.boolean('complete');
   })
 };
 
 exports.down = function(knex) {
-  
+  return knex.schema
+		.dropTableIfExists("unit")
+		.dropTableIfExists("idf_room")
+		.dropTableIfExists("floor")
+		.dropTableIfExists("building")
+		.dropTableIfExists("jobsite")
 };
 
-return knex.schema
-		.createTable("couples", table => {
-			table.increments();
-			table.string("spouse_one_name").notNullable();
-			table.string("spouse_two_name").notNullable();
-			table
-				.string("email")
-				.notNullable()
-				.unique();
-			table.string("password").notNullable();
-			table.string("jwt", 512);
-		})
