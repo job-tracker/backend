@@ -25,6 +25,7 @@ exports.up = function(knex) {
     tbl.integer('building_id').references('building.id');
     tbl.string('name');
     tbl.integer('unit_count');
+    tbl.integer('outlet_count');
     tbl.string('notes');
     tbl.boolean('complete');
   })
