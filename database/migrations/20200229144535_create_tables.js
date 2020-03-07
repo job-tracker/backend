@@ -2,6 +2,7 @@
 exports.up = function(knex) {
   return knex.schema.createTable('jobsite', tbl => {
     tbl.increments();
+    tbl.integer('tracking_number').notNullable().unique();
     tbl.string('name');
     tbl.string('address');
     tbl.jsonb('contact');

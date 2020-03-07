@@ -7,7 +7,7 @@ const express = require("express");
 const router = express();
 router.use(express.json());
 
-// GET User table
+// GET Jobsite table
 router.get("/", async (req, res) => {
 	  try {
 			const jobsites = await Jobsite.find();
@@ -17,85 +17,63 @@ router.get("/", async (req, res) => {
 		}
 });
 
-// GET USER table with ID
+// GET Jobsite table with ID
 router.get("/:id", async (req, res) => {
-	const { subject, role } = req.decodedJwt;
 	const { id } = req.params;
-	if (role === "admin") {
 		try {
-			const user = await User.findById(id);
+			const jobsite = await Jobsite.findById(id);
 
 			if (user) {
-				res.status(200).json(user);
+				res.status(200).json(jobsite);
 			} else {
-				res.status(404).json({ message: "could not find user " });
+				res.status(404).json({ message: "could not find jobsite" });
 			}
 		} catch (err) {
-			res.status(500).json({ message: "failed to get user" });
+			res.status(500).json({ message: "failed to get jobsite" });
 		}
-	} else {
-		User.findById(subject)
-			.then(user => {
-				res.json(user);
-			})
-			.catch(err => {
-				res.status(500).send(err);
-			});
-	}
 });
 
-// EDIT USER with ID
+// POST new Jobsite
+router.post("/", async (req, res) => {
+  const newJob = req.body;
+    if (Object.entries(newJob).length === 0 || !newJob.tracking_number) {
+      return res.status(400).json({
+        error: "Missing required property: tracking number"
+      })
+    } 
+    try {
+      const jobsite = await Jobsite.add(newJob)
+      res.status(201).json(jobsite)
+    }
+    catch (err) {
+    res.status(500).json({message: "Failed to add new jobsite"})
+    }
+})
+
+// EDIT Jobsite with ID
 router.put("/:id", async (req, res) => {
-	const { subject, role } = req.decodedJwt;
 	const { id } = req.params;
 	const changes = req.body;
-	if (role === "admin") {
 		try {
-			const user = await User.findById(id);
+			const jobsite = await Jobsite.findById(id);
 
-			if (user) {
-				const updatedUser = await User.update(changes, id);
+			if (jobsite) {
+				const updatedJob = await Jobsite.update(changes, id);
 
-				res.status(200).json(updatedUser);
+				res.status(200).json(updatedJob);
 			} else {
-				res.status(404).json({ message: "could not find user with given id" });
+				res.status(404).json({ message: "could not find jobsite with given id" });
 			}
 		} catch (err) {
-			res.status(500).json({ message: "Failed to update user" });
+			res.status(500).json({ message: "Failed to update jobsite" });
 		}
-	} else {
-		try {
-			const user = await User.findById(subject);
-
-			if (user) {
-				await User.update(
-					{
-						spouse_one_name: changes.spouse_one_name || user.spouse_one_name,
-						spouse_two_name: changes.spouse_two_name || user.spouse_two_name,
-						email: changes.email || user.email,
-						password: changes.password ? bcrypt.hashSync(changes.password, 10) : user.password,
-						role: user.role,
-					},
-					subject
-				);
-				const updatedInfo = await User.findById(subject);
-				res.status(200).json(updatedInfo);
-			} else {
-				res.status(404).json({ message: "could not find user with given id" });
-			}
-		} catch (err) {
-			res.status(500).json({ message: "Failed to update user" });
-		}
-	}
 });
 
 // DEL request to with ID
 router.delete("/:id", async (req, res) => {
 	const { id } = req.params;
-	const { subject, role } = req.decodedJwt;
-	if (role === "admin") {
 		try {
-			const deleted = await User.remove(id);
+			const deleted = await Jobsite.remove(id);
 
 			if (deleted) {
 				res.status(200).json({ removed: deleted });
@@ -105,19 +83,6 @@ router.delete("/:id", async (req, res) => {
 		} catch (err) {
 			res.status(500).json({ message: "failed to delete user" });
 		}
-	} else {
-		try {
-			const deleted = await User.remove(subject);
-
-			if (deleted) {
-				res.status(200).json({ removed: deleted });
-			} else {
-				res.status(404).json({ message: "could not find user with given id" });
-			}
-		} catch (err) {
-			res.status(500).json({ message: "failed to delete user" });
-		}
-	}
 });
 
 module.exports = router;
