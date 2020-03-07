@@ -23,7 +23,7 @@ router.get("/:id", async (req, res) => {
 		try {
 			const jobsite = await Jobsite.findById(id);
 
-			if (user) {
+			if (jobsite) {
 				res.status(200).json(jobsite);
 			} else {
 				res.status(404).json({ message: "could not find jobsite" });
