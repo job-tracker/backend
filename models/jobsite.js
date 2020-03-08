@@ -12,6 +12,7 @@ module.exports = {
 function find() { 
 	return db("jobsite").select(
 		"id",
+		"tracking_number",
 		"name",
 		"address",
 		"contact",
@@ -33,20 +34,26 @@ async function add(jobsite) {
 }
 
 function findById(id) {
-	return db("jobsite")
-		.select("id", "name", "address", "contact", "notes", "complete")
+	return db("jobsite").select(
+		"id", 
+		"tracking_number", 
+		"name", 
+		"address", 
+		"contact", 
+		"notes", 
+		"complete")
 		.where({ id })
 		.first();
 }
 
-// async function findByWeddingId(jobId) {
-// 	const user = await db
-// 		.select(["spouse_one_name", "spouse_two_name", "email"])
-// 		.from("couples")
-// 		.leftJoin("weddings", "couples.id", "weddings.couple_id")
-// 		.where("weddings.id", "=", weddingId)
+// async function findByJobId(jobId) {
+// 	const job = await db
+// 		.select(["tracking_number", "name", "email"])
+// 		.from("jobsite")
+// 		.leftJoin("jobsites", "couples.id", "weddings.couple_id")
+// 		.where("weddings.id", "=", jobId)
 // 		.first();
-// 	return user;
+// 	return job;
 // }
 
 async function remove(id) {

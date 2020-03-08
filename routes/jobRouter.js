@@ -5,7 +5,12 @@ const bcrypt = require("bcryptjs");
 const express = require("express");
 
 const router = express();
+
+const buildingRouter = require("./buildingRouter");
+
 router.use(express.json());
+
+router.use("/:jobsiteId/buildings", buildingRouter);
 
 // GET Jobsite table
 router.get("/", async (req, res) => {
@@ -58,9 +63,9 @@ router.put("/:id", async (req, res) => {
 			const jobsite = await Jobsite.findById(id);
 
 			if (jobsite) {
-				const updatedJob = await Jobsite.update(changes, id);
+				await Jobsite.update(changes, id);
 
-				res.status(200).json(updatedJob);
+				res.status(200).json(changes);
 			} else {
 				res.status(404).json({ message: "could not find jobsite with given id" });
 			}
@@ -78,10 +83,10 @@ router.delete("/:id", async (req, res) => {
 			if (deleted) {
 				res.status(200).json({ removed: deleted });
 			} else {
-				res.status(404).json({ message: "could not find user with given id" });
+				res.status(404).json({ message: "could not find jobsite with given id" });
 			}
 		} catch (err) {
-			res.status(500).json({ message: "failed to delete user" });
+			res.status(500).json({ message: "failed to jobsite user" });
 		}
 });
 

@@ -4,10 +4,17 @@ exports.up = function(knex) {
     tbl.increments();
     tbl.integer('tracking_number').notNullable().unique();
     tbl.string('name');
-    tbl.string('address');
-    tbl.jsonb('contact');
+    tbl.string('address').notNullable();
     tbl.string('notes');
     tbl.boolean('complete');
+  })
+
+  .createTable('contact', tbl => {
+    tbl.increments();
+    tbl.integer('jobsite_id').references('jobsite.id');
+    tbl.string('title')
+    tbl.string('name').notNullable();
+    tbl.string('phone_number').notNullable();
   })
 
   .createTable('building', tbl => {
@@ -24,9 +31,9 @@ exports.up = function(knex) {
   .createTable("floor", tbl => {
     tbl.increments();
     tbl.integer('building_id').references('building.id');
-    tbl.string('name');
-    tbl.integer('unit_count');
-    tbl.integer('outlet_count');
+    tbl.string('name').notNullable();
+    tbl.integer('unit_count').notNullable();
+    tbl.integer('outlet_count').notNullable();
     tbl.string('notes');
     tbl.boolean('complete');
   })
@@ -35,7 +42,7 @@ exports.up = function(knex) {
     tbl.increments();
     tbl.integer('building_id').references('building.id');
     tbl.integer('floor_id').references('floor.id');
-    tbl.string('location');
+    tbl.string('location').notNullable();
     tbl.string('images');
     tbl.string('notes')
     tbl.boolean('complete');
@@ -45,8 +52,8 @@ exports.up = function(knex) {
     tbl.increments();
     tbl.integer('building_id').references('building.id');
     tbl.integer('floor_id').references('floor.id');
-    tbl.string('name');
-    tbl.integer('outlet_count');
+    tbl.string('name').notNullable();
+    tbl.integer('outlet_count').notNullable();
     tbl.string('notes');
     tbl.boolean('complete');
   })
@@ -57,7 +64,8 @@ exports.down = function(knex) {
 		.dropTableIfExists("unit")
 		.dropTableIfExists("idf_room")
 		.dropTableIfExists("floor")
-		.dropTableIfExists("building")
+    .dropTableIfExists("building")
+    .dropTableIfExists("contact")
 		.dropTableIfExists("jobsite")
 };
 
