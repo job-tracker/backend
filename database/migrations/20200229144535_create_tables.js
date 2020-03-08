@@ -30,6 +30,7 @@ exports.up = function(knex) {
 
   .createTable("floor", tbl => {
     tbl.increments();
+    tbl.integer('jobsite_id').references('jobsite.id');
     tbl.integer('building_id').references('building.id');
     tbl.string('name').notNullable();
     tbl.integer('unit_count').notNullable();
@@ -40,6 +41,7 @@ exports.up = function(knex) {
   
   .createTable("idf_room", tbl => {
     tbl.increments();
+    tbl.integer('jobsite_id').references('jobsite.id');
     tbl.integer('building_id').references('building.id');
     tbl.integer('floor_id').references('floor.id');
     tbl.string('location').notNullable();
@@ -50,6 +52,7 @@ exports.up = function(knex) {
 
   .createTable("unit", tbl => {
     tbl.increments();
+    tbl.integer('jobsite_id').references('jobsite.id');
     tbl.integer('building_id').references('building.id');
     tbl.integer('floor_id').references('floor.id');
     tbl.string('name').notNullable();

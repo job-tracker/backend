@@ -83,9 +83,9 @@ const findContactById = async (req, res, next) => {
 };
 
 const findFloorById = async (req, res, next) => {
-	const { id } = req.params;
+	const { jobsiteId, buildingId, id } = req.params;
 	try {
-		const floor= await Floor.findById(id);
+		const floor= await Floor.findBy({jobsite_id: jobsiteId, building_id: buildingId, id: id});
 		if (!floor) {
 			return res.status(404).json({
 				error: `No floor exists with id ${id}!`,

@@ -4,9 +4,9 @@ const { findFloorById } = require("../middleware")
 
 // GET building table
 router.get("/", async (req, res) => {
-	const { jobsiteId } = req.params;
+	const { jobsiteId, buildingId } = req.params;
 	try {
-		const floors = await Floor.findBy({jobsite_id: jobsiteId});
+		const floors = await Floor.findBy({jobsite_id: jobsiteId, building_id: buildingId});
 		res.status(200).json(floors);
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -27,9 +27,9 @@ router.get("/:id", findFloorById, async (req, res) => {
 		}
 });
 
-// POST new building
+// POST new floor
 router.post("/", async (req, res) => {
-  const { jobsiteId } = req.params;
+  const { jobsiteId, buildingId } = req.params;
   const newFloor = req.body;
     if (Object.entries(newFloor).length === 0) {
       return res.status(400).json({
@@ -37,7 +37,7 @@ router.post("/", async (req, res) => {
       })
     } 
     try {
-      const floor = await Floor.add({jobsite_id: jobsiteId, ...newFloor})
+      const floor = await Floor.add({jobsite_id: jobsiteId, building_id: buildingId, ...newFloor})
       if (floor) {
       res.status(201).json(floor)
       } else {

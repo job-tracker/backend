@@ -2,6 +2,7 @@
 exports.seed = function(knex) {
   return knex("unit").insert([
     {
+      jobsite_id: 1,
       building_id: 1,
       floor_id: 1,
       name: '101',
