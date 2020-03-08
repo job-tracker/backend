@@ -2,6 +2,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Building = require("../models/building.js");
 const Contact = require("../models/contact.js");
+const Floor = require("../models/floor.js");
 
 const secrets = require("../config/secrets");
 
@@ -81,9 +82,30 @@ const findContactById = async (req, res, next) => {
 	}
 };
 
+const findFloorById = async (req, res, next) => {
+	const { id } = req.params;
+	try {
+		const floor= await Floor.findById(id);
+		if (!floor) {
+			return res.status(404).json({
+				error: `No floor exists with id ${id}!`,
+			});
+		} else {
+			req.floor = floor;
+			next();
+		}
+	} catch (err) {
+		res.status(500).json({
+			error: err.message,
+		});
+		throw err;
+	}
+};
+
 module.exports = {
   generateToken,
   restricted,
   findBuildingById,
-  findContactById
+  findContactById,
+  findFloorById
 };
