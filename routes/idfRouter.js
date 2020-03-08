@@ -1,6 +1,6 @@
 const router = require("express").Router({ mergeParams: true });
 const Idf = require("../models/idf");
-const { findIdfById } = require("../middleware")
+const { findIdfById } = require("../middleware");
 
 // GET building table
 router.get("/", async (req, res) => {
