@@ -123,11 +123,32 @@ const findIdfById = async (req, res, next) => {
 	}
 };
 
+const findUnitById = async (req, res, next) => {
+	const { jobsiteId, buildingId, floorId, id } = req.params;
+	try {
+		const unit = await Idf.findBy({jobsite_id: jobsiteId, building_id: buildingId, floor_id: floorId, id: id});
+		if (!unit) {
+			return res.status(404).json({
+				error: `No unit exists with id ${id}!`,
+			});
+		} else {
+			req.unit = unit;
+			next();
+		}
+	} catch (err) {
+		res.status(500).json({
+			error: err.message,
+		});
+		throw err;
+	}
+};
+
 module.exports = {
   generateToken,
   restricted,
   findBuildingById,
   findContactById,
   findFloorById,
-  findIdfById
+  findIdfById,
+  findUnitById
 };

@@ -2,6 +2,10 @@ const router = require("express").Router({ mergeParams: true });
 const Floor = require("../models/floor");
 const { findFloorById } = require("../middleware")
 
+const unitRouter = require("../routes/unitRouter");
+
+router.use("/:floorId/units", unitRouter);
+
 // GET building table
 router.get("/", async (req, res) => {
 	const { jobsiteId, buildingId } = req.params;
