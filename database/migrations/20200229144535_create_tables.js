@@ -43,7 +43,6 @@ exports.up = function(knex) {
     tbl.increments();
     tbl.integer('jobsite_id').references('jobsite.id');
     tbl.integer('building_id').references('building.id');
-    tbl.integer('floor_id').references('floor.id');
     tbl.string('location').notNullable();
     tbl.string('images');
     tbl.string('notes')

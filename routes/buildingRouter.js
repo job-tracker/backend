@@ -3,8 +3,10 @@ const Building = require("../models/building");
 const { findBuildingById } = require("../middleware")
 
 const floorRouter = require("../routes/floorRouter");
+const idfRouter = require("../routes/idfRouter");
 
 router.use("/:buildingId/floors", floorRouter);
+router.use("/:buildingId/idfs", idfRouter);
 
 // GET building table
 router.get("/", async (req, res) => {

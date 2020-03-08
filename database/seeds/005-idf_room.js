@@ -4,8 +4,7 @@ exports.seed = function(knex) {
     {
       jobsite_id: 1,
       building_id: 1,
-      floor_id: 1,
-      location: 'East',
+      location: 'East end of 1st floor',
       images: 'img url',
       notes: 'Random note',
       complete: false
