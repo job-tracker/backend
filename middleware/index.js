@@ -1,6 +1,7 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const Building = require("../models/building.js")
+const Building = require("../models/building.js");
+const Contact = require("../models/contact.js");
 
 const secrets = require("../config/secrets");
 
@@ -60,8 +61,29 @@ const findBuildingById = async (req, res, next) => {
 	}
 };
 
+const findContactById = async (req, res, next) => {
+	const { id } = req.params;
+	try {
+		const contact= await Contact.findById(id);
+		if (!contact) {
+			return res.status(404).json({
+				error: `No contact exists with id ${id}!`,
+			});
+		} else {
+			req.contact = contact;
+			next();
+		}
+	} catch (err) {
+		res.status(500).json({
+			error: err.message,
+		});
+		throw err;
+	}
+};
+
 module.exports = {
   generateToken,
   restricted,
-  findBuildingById
+  findBuildingById,
+  findContactById
 };
