@@ -10,38 +10,38 @@ module.exports = {
 };
 
 function find() { 
-	return db("floor").select(
+	return db("idf_room").select(
         "id",
         "jobsite_id",
         "building_id",
-		"name",
-        "unit_count",
-        "outlet_count",
+        "floor_id",
+		"location",
+        "images",
         "notes",
         "complete"
 	);
 }
 
 function findBy(filter) {
-	return db("floor").where(filter);
+	return db("idf_room").where(filter);
 }
 
-async function add(floor) {
-	const [id] = await db("floor")
-		.insert(floor)
+async function add(idf_room) {
+	const [id] = await db("idf_room")
+		.insert(idf_room)
 		.returning("id");
 
 	return findById(id);
 }
 
 function findById(id) {
-	return db("floor").select(
+	return db("idf_room").select(
         "id",
         "jobsite_id",
         "building_id",
-		"name",
-        "unit_count",
-        "outlet_count",
+        "floor_id",
+		"location",
+        "images",
         "notes",
         "complete")
 		.where({ id })
@@ -50,22 +50,22 @@ function findById(id) {
 
 async function remove(id) {
 	try {
-		deletedFloor = await findById(id);
-		const getFloor = await db("floor")
+		deletedIdf = await findById(id);
+		const getIdf = await db("idf_room")
 			.where({ id })
 			.del();
-		return getFloor ? getFloor : null;
+		return getIdf ? getIdf : null;
 	} catch {
 		throw new Error(err);
 	}
 }
 
-async function update(floor, id) {
+async function update(idf_room, id) {
 	try {
-		const updateFloor = await db("floor")
+		const updateIdf = await db("idf_room")
 			.where({ id })
-			.update(floor);
-		return updateFloor;
+			.update(idf_room);
+		return updateIdf;
 	} catch (err) {
 		throw new Error(err);
 	}
