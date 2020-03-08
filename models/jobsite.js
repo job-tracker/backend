@@ -15,7 +15,6 @@ function find() {
 		"tracking_number",
 		"name",
 		"address",
-		"contact",
         "notes",
         "complete"
 	);
@@ -38,8 +37,7 @@ function findById(id) {
 		"id", 
 		"tracking_number", 
 		"name", 
-		"address", 
-		"contact", 
+		"address",  
 		"notes", 
 		"complete")
 		.where({ id })

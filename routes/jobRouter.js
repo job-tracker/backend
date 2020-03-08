@@ -7,10 +7,12 @@ const express = require("express");
 const router = express();
 
 const buildingRouter = require("./buildingRouter");
+const contactRouter = require("./contactRouter");
 
 router.use(express.json());
 
 router.use("/:jobsiteId/buildings", buildingRouter);
+router.use("/:jobsiteId/contacts", contactRouter);
 
 // GET Jobsite table
 router.get("/", async (req, res) => {
