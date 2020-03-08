@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const Building = require("../models/building.js");
 const Contact = require("../models/contact.js");
 const Floor = require("../models/floor.js");
+const Idf = require("../models/idf.js");
 
 const secrets = require("../config/secrets");
 
@@ -65,7 +66,7 @@ const findBuildingById = async (req, res, next) => {
 const findContactById = async (req, res, next) => {
 	const { id } = req.params;
 	try {
-		const contact= await Contact.findById(id);
+		const contact = await Contact.findById(id);
 		if (!contact) {
 			return res.status(404).json({
 				error: `No contact exists with id ${id}!`,
@@ -85,7 +86,7 @@ const findContactById = async (req, res, next) => {
 const findFloorById = async (req, res, next) => {
 	const { jobsiteId, buildingId, id } = req.params;
 	try {
-		const floor= await Floor.findBy({jobsite_id: jobsiteId, building_id: buildingId, id: id});
+		const floor = await Floor.findBy({jobsite_id: jobsiteId, building_id: buildingId, id: id});
 		if (!floor) {
 			return res.status(404).json({
 				error: `No floor exists with id ${id}!`,
@@ -102,10 +103,31 @@ const findFloorById = async (req, res, next) => {
 	}
 };
 
+const findIdfById = async (req, res, next) => {
+	const { jobsiteId, buildingId, id } = req.params;
+	try {
+		const idf = await Idf.findBy({jobsite_id: jobsiteId, building_id: buildingId, id: id});
+		if (!idf) {
+			return res.status(404).json({
+				error: `No idf room exists with id ${id}!`,
+			});
+		} else {
+			req.idf = idf;
+			next();
+		}
+	} catch (err) {
+		res.status(500).json({
+			error: err.message,
+		});
+		throw err;
+	}
+};
+
 module.exports = {
   generateToken,
   restricted,
   findBuildingById,
   findContactById,
-  findFloorById
+  findFloorById,
+  findIdfById
 };
