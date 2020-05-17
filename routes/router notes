@@ -1,0 +1,19 @@
+ Tables
+
+jobsite
+contact
+jobsite_notes
+tasks
+
+building
+building_notes
+service_room (also linked to floor)
+service_room_notes
+
+floor
+service_room (also linked to building)
+floor_notes
+
+unit
+unit_notes
+
