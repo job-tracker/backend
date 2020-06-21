@@ -55,6 +55,8 @@ exports.up = function (knex) {
         tbl.increments();
         tbl.integer('jobsite_id').references('jobsites.id');
         tbl.integer('building_id').references('buildings.id');
+        // change location to floor reference, we want to use a
+        // drop down to select the floor.
         tbl.string('location').notNullable();
         tbl.string('images');
         tbl.boolean('complete').defaultTo(false);
@@ -86,6 +88,9 @@ exports.up = function (knex) {
         tbl.integer('building_id').references('buildings.id');
         tbl.integer('floor_id').references('floors.id');
         tbl.string('name').notNullable();
+        // change outlet count to work performed (or something like that)
+        // to generalize it for multiple professions, change to string so
+        // user can save whatever work they performed in the unit,
         tbl.integer('outlet_count').notNullable();
         tbl.boolean('complete').defaultTo(false);
       })
