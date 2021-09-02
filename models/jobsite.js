@@ -1,47 +1,39 @@
-const db = require("../database/config");
+const db = require('../database/config');
 
 module.exports = {
-	add,
-	find,
-	findBy,
-	findById,
-	remove,
-	update,
+  add,
+  find,
+  findBy,
+  findById,
+  remove,
+  update,
 };
 
-function find() { 
-	return db("jobsite").select(
-		"id",
-		"tracking_number",
-		"name",
-		"address",
-        "notes",
-        "complete"
-	);
+function find() {
+  return db('jobsites').select(
+    'id',
+    'tracking_number',
+    'name',
+    'address',
+    'complete'
+  );
 }
 
 function findBy(filter) {
-	return db("jobsite").where(filter);
+  return db('jobsites').where(filter);
 }
 
 async function add(jobsite) {
-	const [id] = await db("jobsite")
-		.insert(jobsite)
-		.returning("id");
+  const [id] = await db('jobsites').insert(jobsite).returning('id');
 
-	return findById(id);
+  return findById(id);
 }
 
 function findById(id) {
-	return db("jobsite").select(
-		"id", 
-		"tracking_number", 
-		"name", 
-		"address",  
-		"notes", 
-		"complete")
-		.where({ id })
-		.first();
+  return db('jobsites')
+    .select('id', 'tracking_number', 'name', 'address', 'complete')
+    .where({ id })
+    .first();
 }
 
 // async function findByJobId(jobId) {
@@ -55,24 +47,20 @@ function findById(id) {
 // }
 
 async function remove(id) {
-	try {
-		deletedJob = await findById(id);
-		const getJob = await db("jobsite")
-			.where({ id })
-			.del();
-		return getJob ? getJob : null;
-	} catch {
-		throw new Error(err);
-	}
+  try {
+    deletedJob = await findById(id);
+    const getJob = await db('jobsites').where({ id }).del();
+    return getJob ? getJob : null;
+  } catch {
+    throw new Error(err);
+  }
 }
 
 async function update(jobsite, id) {
-	try {
-		const updateJob = await db("jobsite")
-			.where({ id })
-			.update(jobsite);
-		return updateJob;
-	} catch (err) {
-		throw new Error(err);
-	}
+  try {
+    const updateJob = await db('jobsites').where({ id }).update(jobsite);
+    return updateJob;
+  } catch (err) {
+    throw new Error(err);
+  }
 }
