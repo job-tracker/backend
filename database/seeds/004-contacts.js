@@ -6,5 +6,11 @@ exports.seed = function (knex) {
       name: 'Rick Jones',
       phone_number: '123-555-2323',
     },
+    {
+      jobsite_id: 2,
+      job_title: 'Head Electrician',
+      name: 'Devin Thompson',
+      phone_number: '123-555-4466',
+    },
   ]);
 };
