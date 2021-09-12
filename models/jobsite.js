@@ -12,6 +12,7 @@ module.exports = {
 function find() {
   return db('jobsites').select(
     'id',
+    'user_id',
     'tracking_number',
     'name',
     'address',
