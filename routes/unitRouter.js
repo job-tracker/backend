@@ -2,7 +2,7 @@ const router = require('express').Router({ mergeParams: true });
 const Unit = require('../models/unit');
 const { findUnitById } = require('../middleware');
 
-// GET building table
+// GET unit table
 router.get('/', async (req, res) => {
   const { jobsiteId, buildingId, floorId } = req.params;
   try {
@@ -17,7 +17,7 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET building table with ID
+// GET unit table with ID
 router.get('/:id', findUnitById, async (req, res) => {
   const { unit } = req;
   try {
@@ -31,7 +31,7 @@ router.get('/:id', findUnitById, async (req, res) => {
   }
 });
 
-// POST new floor
+// POST new unit
 router.post('/', async (req, res) => {
   const { jobsiteId, buildingId, floorId } = req.params;
   const newUnit = req.body;
@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// EDIT building with ID
+// EDIT unit with ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
@@ -76,7 +76,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DEL request to with ID
+// DEL unit with ID
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {

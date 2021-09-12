@@ -1,39 +1,38 @@
 const router = require('express').Router({ mergeParams: true });
-const Building = require('../models/building');
-const { findBuildingById } = require('../middleware');
+const User = require('../models/user');
+const { findUserById } = require('../middleware');
 
-const floorRouter = require('../routes/floorRouter');
-const serviceRoomRouter = require('./supplyListRouter');
+const jobsiteRouter = require('../routes/jobsiteRouter');
+const supplyListRouter = require('../routes/supplyListRouter');
 
-router.use('/:buildingId/floors', floorRouter);
-router.use('/:buildingId/service', serviceRoomRouter);
+router.use('/:userId/jobsites', jobsiteRouter);
+router.use('/:userId/supplylists', supplyListRouter);
 
-// GET building table
+// GET user table
 router.get('/', async (req, res) => {
-  const { jobsiteId } = req.params;
   try {
-    const buildings = await Building.findBy({ jobsite_id: jobsiteId });
-    res.status(200).json(buildings);
+    const users = await User.find();
+    res.status(200).json(users);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET building table with ID
-router.get('/:id', findBuildingById, async (req, res) => {
-  const { building } = req;
+// GET user table with ID
+router.get('/:user_id', findUserById, async (req, res) => {
+  const { user } = req;
   try {
-    if (building) {
-      res.status(200).json(building);
+    if (user) {
+      res.status(200).json(user);
     } else {
-      res.status(404).json({ message: 'could not find building' });
+      res.status(404).json({ message: 'could not find user' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'failed to get building' });
+    res.status(500).json({ message: 'failed to get user' });
   }
 });
 
-// POST new building
+// POST new user
 router.post('/', async (req, res) => {
   const { jobsiteId } = req.params;
   const newBuilding = req.body;
@@ -57,7 +56,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-// EDIT building with ID
+// EDIT user with ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
@@ -78,7 +77,7 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DEL request to with ID
+// DEL user with ID
 router.delete('/:id', async (req, res) => {
   const { id } = req.params;
   try {

@@ -1,9 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+const SupplyList = require('../models/supplyList.js');
 const Building = require('../models/building.js');
 const Contact = require('../models/contact.js');
 const Floor = require('../models/floor.js');
-const Idf = require('../models/idf.js');
+const Idf = require('../models/supplyList.js');
 const Unit = require('../models/unit.js');
 
 const secrets = require('../config/secrets');
@@ -43,6 +45,46 @@ function generateToken(user) {
   // extract the secret away so it can be required and used where needed
   return jwt.sign(payload, secrets.jwtSecret, options); // this method is synchronous
 }
+
+const findUserById = async (req, res, next) => {
+  const { user_id } = req.params;
+  try {
+    const user = await User.findByUserId(user_id);
+    if (!user) {
+      return res.status(404).json({
+        error: `No user exists with id ${user_id}!`,
+      });
+    } else {
+      req.user = user;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+    throw err;
+  }
+};
+
+const findSupplyListById = async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const supplyList = await SupplyList.findById(id);
+    if (!supplyList) {
+      return res.status(404).json({
+        error: `No building exists with id ${id}!`,
+      });
+    } else {
+      req.supplyList = supplyList;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+    throw err;
+  }
+};
 
 const findBuildingById = async (req, res, next) => {
   const { id } = req.params;
@@ -160,6 +202,8 @@ const findUnitById = async (req, res, next) => {
 module.exports = {
   generateToken,
   restricted,
+  findUserById,
+  findSupplyListById,
   findBuildingById,
   findContactById,
   findFloorById,
