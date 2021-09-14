@@ -1,10 +1,10 @@
+const router = require('express').Router({ mergeParams: true });
+
 require('dotenv').config();
 
 const Jobsite = require('../models/jobsite');
 const bcrypt = require('bcryptjs');
 const express = require('express');
-
-const router = express();
 
 const buildingRouter = require('./buildingRouter');
 const contactRouter = require('./contactRouter');
@@ -16,10 +16,10 @@ router.use('/:jobsiteId/contacts', contactRouter);
 
 // GET Jobsite table
 router.get('/', async (req, res) => {
+  const { userId } = req.params;
   try {
-    const jobsites = await Jobsite.find();
-    console.log(jobsites);
-    res.json(jobsites);
+    const jobsites = await Jobsite.findBy({ user_id: userId });
+    res.status(200).json(jobsites);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
