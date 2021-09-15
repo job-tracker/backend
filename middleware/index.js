@@ -125,7 +125,7 @@ const findContactById = async (req, res, next) => {
       user_id: userId,
       jobsite_id: jobsiteId,
     });
-    if (!contact) {
+    if (Object.entries(contact).length === 0) {
       return res.status(404).json({
         error: `No contact exists with id ${id}!`,
       });
