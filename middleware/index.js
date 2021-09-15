@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+const Jobsite = require('../models/jobsite.js');
 const SupplyList = require('../models/supplyList.js');
 const Building = require('../models/building.js');
 const Contact = require('../models/contact.js');
@@ -85,6 +86,16 @@ const findSupplyListById = async (req, res, next) => {
     throw err;
   }
 };
+
+// const findJobsiteByUserId = async (req, res, next) => {
+//   const { userId } = req.params;
+//   try {
+//     const jobsite = await Jobsite.findBy({ user_id: userId });
+
+//   } catch (err) {
+//     res.status(500).json({ error: err.message });
+//   }
+// };
 
 const findBuildingById = async (req, res, next) => {
   const { id } = req.params;

@@ -14,5 +14,19 @@ exports.seed = function (knex) {
       address: '17654 47th St Tacoma, Wa',
       complete: false,
     },
+    {
+      user_id: 1001,
+      tracking_number: 123889,
+      name: 'Caddyshack',
+      address: '675 The Ave Seattle, Wa',
+      complete: false,
+    },
+    {
+      user_id: 1002,
+      tracking_number: 123890,
+      name: 'High Homes',
+      address: '154 7th St Tacoma, Wa',
+      complete: false,
+    },
   ]);
 };

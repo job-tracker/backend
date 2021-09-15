@@ -5,7 +5,6 @@ module.exports = {
   find,
   findBy,
   findById,
-  findByUserId,
   remove,
   update,
 };
@@ -35,13 +34,6 @@ function findById(id) {
   return db('jobsites')
     .select('id', 'user_id', 'tracking_number', 'name', 'address', 'complete')
     .where({ id })
-    .first();
-}
-
-function findByUserId(user_id) {
-  return db('jobsites')
-    .select('id', 'user_id', 'tracking_number', 'name', 'address', 'complete')
-    .where({ user_id })
     .first();
 }
 

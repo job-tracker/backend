@@ -13,11 +13,8 @@ function find() {
   return db('buildings').select(
     'id',
     'jobsite_id',
-    'name',
-    // 'floor_count',
-    // 'unit_count',
-    // 'outlet_count',
-    // 'notes',
+    'address',
+    'scope_of_work',
     'complete'
   );
 }
@@ -34,16 +31,7 @@ async function add(building) {
 
 function findById(id) {
   return db('buildings')
-    .select(
-      'id',
-      'jobsite_id',
-      'name',
-      // 'floor_count',
-      // 'unit_count',
-      // 'outlet_count',
-      // 'notes',
-      'complete'
-    )
+    .select('id', 'jobsite_id', 'address', 'scope_of_work', 'complete')
     .where({ id })
     .first();
 }
