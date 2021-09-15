@@ -1,6 +1,7 @@
 exports.seed = function (knex) {
   return knex('units').insert([
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 1,
       floor_id: 1,
@@ -9,6 +10,7 @@ exports.seed = function (knex) {
       complete: true,
     },
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 1,
       floor_id: 2,
@@ -17,6 +19,7 @@ exports.seed = function (knex) {
       complete: true,
     },
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 2,
       floor_id: 1,
@@ -25,6 +28,7 @@ exports.seed = function (knex) {
       complete: false,
     },
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 2,
       floor_id: 2,
@@ -33,6 +37,7 @@ exports.seed = function (knex) {
       complete: true,
     },
     {
+      user_id: 1002,
       jobsite_id: 2,
       building_id: 3,
       floor_id: 3,
@@ -41,6 +46,7 @@ exports.seed = function (knex) {
       complete: true,
     },
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 3,
       floor_id: 4,
@@ -49,6 +55,7 @@ exports.seed = function (knex) {
       complete: true,
     },
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 4,
       floor_id: 1,
@@ -57,6 +64,7 @@ exports.seed = function (knex) {
       complete: false,
     },
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 4,
       floor_id: 2,

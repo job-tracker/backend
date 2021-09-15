@@ -118,9 +118,13 @@ const findBuildingById = async (req, res, next) => {
 };
 
 const findContactById = async (req, res, next) => {
-  const { id } = req.params;
+  const { id, userId, jobsiteId } = req.params;
   try {
-    const contact = await Contact.findById(id);
+    const contact = await Contact.findBy({
+      id: id,
+      user_id: userId,
+      jobsite_id: jobsiteId,
+    });
     if (!contact) {
       return res.status(404).json({
         error: `No contact exists with id ${id}!`,

@@ -34,6 +34,7 @@ exports.up = function (knex) {
 
       .createTable('contacts', (tbl) => {
         tbl.increments();
+        tbl.integer('user_id').references('users.user_id');
         tbl.integer('jobsite_id').references('jobsites.id');
         tbl.string('job_title');
         tbl.string('name');
@@ -42,6 +43,7 @@ exports.up = function (knex) {
 
       .createTable('jobsite_notes', (tbl) => {
         tbl.increments();
+        tbl.integer('user_id').references('users.user_id');
         tbl.integer('jobsite_id').references('jobsites.id');
         tbl.string('note').notNullable();
         tbl.boolean('complete').defaultTo(false);
@@ -60,6 +62,7 @@ exports.up = function (knex) {
 
       .createTable('buildings', (tbl) => {
         tbl.increments();
+        tbl.integer('user_id').references('users.user_id');
         tbl.integer('jobsite_id').references('jobsites.id');
         tbl.string('address').notNullable();
         tbl.string('scope_of_work');
@@ -96,6 +99,7 @@ exports.up = function (knex) {
 
       .createTable('floors', (tbl) => {
         tbl.increments();
+        tbl.integer('user_id').references('users.user_id');
         tbl.integer('jobsite_id').references('jobsites.id');
         tbl.integer('building_id').references('buildings.id');
         tbl.string('name').notNullable();
@@ -107,6 +111,7 @@ exports.up = function (knex) {
 
       .createTable('units', (tbl) => {
         tbl.increments();
+        tbl.integer('user_id').references('users.user_id');
         tbl.integer('jobsite_id').references('jobsites.id');
         tbl.integer('building_id').references('buildings.id');
         tbl.integer('floor_id').references('floors.id');

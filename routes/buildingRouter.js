@@ -10,9 +10,12 @@ router.use('/:buildingId/service', serviceRoomRouter);
 
 // GET building table
 router.get('/', async (req, res) => {
-  const { jobsiteId } = req.params;
+  const { userId, jobsiteId } = req.params;
   try {
-    const buildings = await Building.findBy({ jobsite_id: jobsiteId });
+    const buildings = await Building.findBy({
+      user_id: userId,
+      jobsite_id: jobsiteId,
+    });
     res.status(200).json(buildings);
   } catch (err) {
     res.status(500).json({ error: err.message });

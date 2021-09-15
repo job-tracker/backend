@@ -1,6 +1,7 @@
 exports.seed = function (knex) {
   return knex('floors').insert([
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 1,
       name: '1',
@@ -8,6 +9,7 @@ exports.seed = function (knex) {
       complete: false,
     },
     {
+      user_id: 1001,
       jobsite_id: 1,
       building_id: 2,
       name: '2',
@@ -15,6 +17,7 @@ exports.seed = function (knex) {
       complete: false,
     },
     {
+      user_id: 1002,
       jobsite_id: 2,
       building_id: 3,
       name: '1',
@@ -22,6 +25,7 @@ exports.seed = function (knex) {
       complete: false,
     },
     {
+      user_id: 1002,
       jobsite_id: 2,
       building_id: 4,
       name: '2',
