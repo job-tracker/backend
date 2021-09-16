@@ -19,7 +19,9 @@ router.get('/', async (req, res) => {
   const { userId } = req.params;
   try {
     const jobsites = await Jobsite.findBy({ user_id: userId });
-    res.status(200).json(jobsites);
+    if (Object.entries(jobsite).length != 0) {
+      res.status(200).json(jobsites);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -31,7 +33,7 @@ router.get('/:id', async (req, res) => {
   try {
     const jobsite = await Jobsite.findBy({ id: id, user_id: userId });
 
-    if (Object.entries(jobsite).length !== 0) {
+    if (Object.entries(jobsite).length != 0) {
       res.status(200).json(jobsite);
     } else {
       res.status(404).json({ message: 'could not find jobsite' });

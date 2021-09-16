@@ -194,15 +194,16 @@ const findIdfById = async (req, res, next) => {
 };
 
 const findUnitById = async (req, res, next) => {
-  const { jobsiteId, buildingId, floorId, id } = req.params;
+  const { userId, jobsiteId, buildingId, floorId, id } = req.params;
   try {
     const unit = await Unit.findBy({
+      user_id: userId,
       jobsite_id: jobsiteId,
       building_id: buildingId,
       floor_id: floorId,
       id: id,
     });
-    if (!unit) {
+    if (Object.entries(unit).length === 0) {
       return res.status(404).json({
         error: `No unit exists with id ${id}!`,
       });

@@ -4,9 +4,10 @@ const { findUnitById } = require('../middleware');
 
 // GET unit table
 router.get('/', async (req, res) => {
-  const { jobsiteId, buildingId, floorId } = req.params;
+  const { userId, jobsiteId, buildingId, floorId } = req.params;
   try {
     const units = await Unit.findBy({
+      user_id: userId,
       jobsite_id: jobsiteId,
       building_id: buildingId,
       floor_id: floorId,
