@@ -12,6 +12,7 @@ module.exports = {
 function find() {
   return db('floors').select(
     'id',
+    'user_id',
     'jobsite_id',
     'building_id',
     'name',
@@ -36,6 +37,7 @@ function findById(id) {
   return db('floors')
     .select(
       'id',
+      'user_id',
       'jobsite_id',
       'building_id',
       'name',

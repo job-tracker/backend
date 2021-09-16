@@ -51,9 +51,9 @@ const findUserById = async (req, res, next) => {
   const { user_id } = req.params;
   try {
     const user = await User.findByUserId(user_id);
-    if (!user) {
+    if (Object.entries(user).length === 0) {
       return res.status(404).json({
-        error: `No user exists with id ${user_id}!`,
+        error: `No user exists with id ${id}!`,
       });
     } else {
       req.user = user;
@@ -68,12 +68,12 @@ const findUserById = async (req, res, next) => {
 };
 
 const findSupplyListById = async (req, res, next) => {
-  const { id } = req.params;
+  const { id, userId } = req.params;
   try {
-    const supplyList = await SupplyList.findById(id);
-    if (!supplyList) {
+    const supplyList = await SupplyList.findBy({ id: id, user_id: userId });
+    if (Object.entries(supplyList).length === 0) {
       return res.status(404).json({
-        error: `No building exists with id ${id}!`,
+        error: `No supply list exists with id ${id}!`,
       });
     } else {
       req.supplyList = supplyList;
@@ -98,10 +98,14 @@ const findSupplyListById = async (req, res, next) => {
 // };
 
 const findBuildingById = async (req, res, next) => {
-  const { id } = req.params;
+  const { id, userId, jobsiteId } = req.params;
   try {
-    const building = await Building.findById(id);
-    if (!building) {
+    const building = await Building.findBy({
+      id: id,
+      user_id: userId,
+      jobsite_id: jobsiteId,
+    });
+    if (Object.entries(building).length === 0) {
       return res.status(404).json({
         error: `No building exists with id ${id}!`,
       });
@@ -149,7 +153,7 @@ const findFloorById = async (req, res, next) => {
       building_id: buildingId,
       id: id,
     });
-    if (!floor) {
+    if (Object.entries(floor).length === 0) {
       return res.status(404).json({
         error: `No floor exists with id ${id}!`,
       });

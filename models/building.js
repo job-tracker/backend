@@ -12,6 +12,7 @@ module.exports = {
 function find() {
   return db('buildings').select(
     'id',
+    'user_id',
     'jobsite_id',
     'address',
     'scope_of_work',
@@ -31,7 +32,14 @@ async function add(building) {
 
 function findById(id) {
   return db('buildings')
-    .select('id', 'jobsite_id', 'address', 'scope_of_work', 'complete')
+    .select(
+      'id',
+      'user_id',
+      'jobsite_id',
+      'address',
+      'scope_of_work',
+      'complete'
+    )
     .where({ id })
     .first();
 }

@@ -4,9 +4,9 @@ const { findSupplyListById } = require('../middleware');
 
 // GET supply list table
 router.get('/', async (req, res) => {
-  const { id, userId } = req.params;
+  const { userId } = req.params;
   try {
-    const supplyList = await SupplyList.findBy({ id: id, user_id: userId });
+    const supplyList = await SupplyList.findBy({ user_id: userId });
     res.status(200).json(supplyList);
   } catch (err) {
     res.status(500).json({ error: err.message });
