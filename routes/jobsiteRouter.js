@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
   const { userId } = req.params;
   try {
     const jobsites = await Jobsite.findBy({ user_id: userId });
-    if (Object.entries(jobsite).length != 0) {
+    if (Object.entries(jobsites).length != 0) {
       res.status(200).json(jobsites);
     }
   } catch (err) {
@@ -42,22 +42,6 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: 'failed to get jobsite' });
   }
 });
-
-// GET jobsite assigned to user
-// router.get('/:id', async (req, res) => {
-//   const { userId, id } = req.params;
-//   try {
-//     const jobsite = await Jobsite.findByUserId(userId);
-
-//     if (jobsite) {
-//       res.status(200).json(jobsite);
-//     } else {
-//       res.status(404).json({ message: 'could not find jobsite' });
-//     }
-//   } catch (err) {
-//     res.status(500).json({ message: 'failed to get jobsite' });
-//   }
-// });
 
 // POST new Jobsite
 router.post('/', async (req, res) => {
