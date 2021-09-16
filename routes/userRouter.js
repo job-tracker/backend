@@ -34,25 +34,23 @@ router.get('/:user_id', findUserById, async (req, res) => {
 
 // POST new user
 router.post('/', async (req, res) => {
-  const { jobsiteId } = req.params;
-  const newBuilding = req.body;
-  if (Object.entries(newBuilding).length === 0) {
-    return res.status(400).json({
+  const newUser = req.body;
+  if (Object.entries(newUser).length === 0) {
+    return res.status(204).json({
       error: 'Empty request',
     });
   }
   try {
-    const building = await Building.add({
-      jobsite_id: jobsiteId,
-      ...newBuilding,
+    const user = await User.add({
+      ...newUser,
     });
-    if (building) {
-      res.status(201).json(building);
+    if (user) {
+      res.status(201).json(user);
     } else {
-      res.status(404).json({ message: 'Building could not be added' });
+      res.status(404).json({ message: 'User could not be added' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to add new building' });
+    res.status(500).json({ message: 'Failed to add new user' });
   }
 });
 
