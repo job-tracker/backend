@@ -11,12 +11,19 @@ router.use('/:buildingId/service', serviceRoomRouter);
 // GET building table
 router.get('/', async (req, res) => {
   const { userId, jobsiteId } = req.params;
+
   try {
     const buildings = await Building.findBy({
       user_id: userId,
       jobsite_id: jobsiteId,
     });
-    res.status(200).json(buildings);
+    if (Object.entries(buildings).length === 0) {
+      return res.status(400).json({
+        error: 'Empty request, you must first add a building.',
+      });
+    } else {
+      res.status(200).json(buildings);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -38,7 +45,7 @@ router.get('/:id', findBuildingById, async (req, res) => {
 
 // POST new building
 router.post('/', async (req, res) => {
-  const { jobsiteId } = req.params;
+  const { userId, jobsiteId } = req.params;
   const newBuilding = req.body;
   if (Object.entries(newBuilding).length === 0) {
     return res.status(400).json({
@@ -47,6 +54,7 @@ router.post('/', async (req, res) => {
   }
   try {
     const building = await Building.add({
+      user_id: userId,
       jobsite_id: jobsiteId,
       ...newBuilding,
     });
