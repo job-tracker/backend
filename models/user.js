@@ -48,9 +48,11 @@ async function remove(id) {
   }
 }
 
-async function update(user, id) {
+async function update(user, userId) {
   try {
-    const updateUser = await db('users').where({ id }).update(user);
+    const updateUser = await db('users')
+      .where({ user_id: userId })
+      .update(user);
     return updateUser;
   } catch (err) {
     throw new Error(err);

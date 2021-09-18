@@ -55,14 +55,14 @@ router.post('/', async (req, res) => {
 });
 
 // EDIT user with ID
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
+router.put('/:userId', async (req, res) => {
+  const { userId } = req.params;
   const changes = req.body;
   try {
-    const building = await Building.findById(id);
+    const user = await User.findByUserId(userId);
 
-    if (building) {
-      await Building.update(changes, id);
+    if (user) {
+      await User.update(changes, userId);
 
       res.status(200).json(changes);
     } else {
