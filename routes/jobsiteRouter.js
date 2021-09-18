@@ -45,17 +45,18 @@ router.get('/:id', async (req, res) => {
 
 // POST new Jobsite
 router.post('/', async (req, res) => {
+  const { userId } = req.params;
   const newJob = req.body;
-  if (Object.entries(newJob).length === 0 || !newJob.tracking_number) {
+  if (Object.entries(newJob).length === 0) {
     return res.status(400).json({
       error: 'Missing required property: tracking number',
     });
   }
   try {
-    const jobsite = await Jobsite.add(newJob);
+    const jobsite = await Jobsite.add({ user_id: userId, ...newJob });
     res.status(201).json(jobsite);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to add new jobsite' });
+    res.status(500).json({ message: err.message });
   }
 });
 

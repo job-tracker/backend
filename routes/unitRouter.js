@@ -12,7 +12,11 @@ router.get('/', async (req, res) => {
       building_id: buildingId,
       floor_id: floorId,
     });
-    res.status(200).json(units);
+    if (Object.entries(units).length === 0) {
+      return res.status(400).json({ error: 'Empty Request' });
+    } else {
+      res.status(200).json(units);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -34,7 +38,7 @@ router.get('/:id', findUnitById, async (req, res) => {
 
 // POST new unit
 router.post('/', async (req, res) => {
-  const { jobsiteId, buildingId, floorId } = req.params;
+  const { userId, jobsiteId, buildingId, floorId } = req.params;
   const newUnit = req.body;
   if (Object.entries(newUnit).length === 0) {
     return res.status(400).json({
@@ -43,6 +47,7 @@ router.post('/', async (req, res) => {
   }
   try {
     const unit = await Unit.add({
+      user_id: userId,
       jobsite_id: jobsiteId,
       building_id: buildingId,
       floor_id: floorId,
@@ -54,7 +59,7 @@ router.post('/', async (req, res) => {
       res.status(404).json({ message: 'Unit could not be added' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to add new unit' });
+    res.status(500).json({ message: err.message });
   }
 });
 

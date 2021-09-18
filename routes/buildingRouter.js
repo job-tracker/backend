@@ -19,7 +19,7 @@ router.get('/', async (req, res) => {
     });
     if (Object.entries(buildings).length === 0) {
       return res.status(400).json({
-        error: 'Empty request, you must first add a building.',
+        error: 'You must first add a building.',
       });
     } else {
       res.status(200).json(buildings);

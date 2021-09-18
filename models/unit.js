@@ -17,8 +17,7 @@ function find() {
     'building_id',
     'floor_id',
     'name',
-    'outlet_count',
-    'notes',
+    'scope_of_work',
     'complete'
   );
 }
@@ -42,8 +41,7 @@ function findById(id) {
       'building_id',
       'floor_id',
       'name',
-      'outlet_count',
-      'notes',
+      'scope_of_work',
       'complete'
     )
     .where({ id })
