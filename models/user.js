@@ -38,12 +38,13 @@ function findByUserId(user_id) {
     .first();
 }
 
-async function remove(id) {
+async function remove(userId) {
   try {
-    deletedUser = await findById(id);
-    const getUser = await db('users').where({ id }).del();
+    const removedUser = await findByUserId(userId);
+    console.log(userId);
+    const getUser = await db('users').where({ user_id: userId }).del();
     return getUser ? getUser : null;
-  } catch {
+  } catch (err) {
     throw new Error(err);
   }
 }

@@ -50,7 +50,7 @@ function generateToken(user) {
 const findUserById = async (req, res, next) => {
   const { user_id } = req.params;
   try {
-    const user = await User.findByUserId(user_id);
+    const user = await User.findBy({ user_id: user_id });
     if (Object.entries(user).length === 0) {
       return res.status(404).json({
         error: `No user exists with id ${id}!`,

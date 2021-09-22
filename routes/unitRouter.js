@@ -86,9 +86,9 @@ router.put('/:id', async (req, res) => {
 
 // DEL unit with ID
 router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+  const { id, userId } = req.params;
   try {
-    const deleted = await Unit.remove(id);
+    const deleted = await Unit.remove(id, userId);
 
     if (deleted) {
       res.status(200).json({ removed: deleted });

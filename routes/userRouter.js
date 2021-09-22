@@ -76,20 +76,18 @@ router.put('/:userId', async (req, res) => {
 });
 
 // DEL user with ID
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+router.delete('/:userId', async (req, res) => {
+  const { userId } = req.params;
   try {
-    const deleted = await Building.remove(id);
-
+    const deleted = await User.remove(userId);
     if (deleted) {
       res.status(200).json({ removed: deleted });
     } else {
-      res
-        .status(404)
-        .json({ message: 'could not find building with given id' });
+      res.status(404).json({ message: 'could not find user with given id' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'failed to delete building' });
+    console.log(err);
+    res.status(500).json({ error: 'Error msg' });
   }
 });
 
