@@ -8,6 +8,7 @@ const express = require('express');
 
 const buildingRouter = require('./buildingRouter');
 const contactRouter = require('./contactRouter');
+const { findJobsiteById } = require('../middleware');
 
 router.use(express.json());
 
@@ -21,6 +22,8 @@ router.get('/', async (req, res) => {
     const jobsites = await Jobsite.findBy({ user_id: userId });
     if (Object.entries(jobsites).length != 0) {
       res.status(200).json(jobsites);
+    } else {
+      res.status(404).json({ message: 'You must first add a jobsite' });
     }
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -28,12 +31,10 @@ router.get('/', async (req, res) => {
 });
 
 // GET Jobsite table with ID
-router.get('/:id', async (req, res) => {
-  const { id, userId } = req.params;
+router.get('/:id', findJobsiteById, async (req, res) => {
+  const { jobsite } = req;
   try {
-    const jobsite = await Jobsite.findBy({ id: id, user_id: userId });
-
-    if (Object.entries(jobsite).length != 0) {
+    if (jobsite) {
       res.status(200).json(jobsite);
     } else {
       res.status(404).json({ message: 'could not find jobsite' });

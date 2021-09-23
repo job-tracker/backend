@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
       floor_id: floorId,
     });
     if (Object.entries(units).length === 0) {
-      return res.status(400).json({ error: 'Empty Request' });
+      return res.status(400).json({ error: 'You must first add a unit' });
     } else {
       res.status(200).json(units);
     }

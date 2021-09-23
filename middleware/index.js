@@ -6,7 +6,6 @@ const SupplyList = require('../models/supplyList.js');
 const Building = require('../models/building.js');
 const Contact = require('../models/contact.js');
 const Floor = require('../models/floor.js');
-const Idf = require('../models/supplyList.js');
 const Unit = require('../models/unit.js');
 
 const secrets = require('../config/secrets');
@@ -53,7 +52,7 @@ const findUserById = async (req, res, next) => {
     const user = await User.findBy({ user_id: user_id });
     if (Object.entries(user).length === 0) {
       return res.status(404).json({
-        error: `No user exists with id ${id}!`,
+        error: `No user exists with id ${user_id}!`,
       });
     } else {
       req.user = user;
@@ -87,15 +86,25 @@ const findSupplyListById = async (req, res, next) => {
   }
 };
 
-// const findJobsiteByUserId = async (req, res, next) => {
-//   const { userId } = req.params;
-//   try {
-//     const jobsite = await Jobsite.findBy({ user_id: userId });
-
-//   } catch (err) {
-//     res.status(500).json({ error: err.message });
-//   }
-// };
+const findJobsiteById = async (req, res, next) => {
+  const { id, userId } = req.params;
+  try {
+    const jobsite = await Jobsite.findBy({ id: id, user_id: userId });
+    if (Object.entries(jobsite).length === 0) {
+      return res.status(404).json({
+        error: `No jobsite exists with id ${id}!`,
+      });
+    } else {
+      req.jobsite = jobsite;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+    throw err;
+  }
+};
 
 const findBuildingById = async (req, res, next) => {
   const { id, userId, jobsiteId } = req.params;
@@ -169,30 +178,6 @@ const findFloorById = async (req, res, next) => {
   }
 };
 
-const findIdfById = async (req, res, next) => {
-  const { jobsiteId, buildingId, id } = req.params;
-  try {
-    const idf = await Idf.findBy({
-      jobsite_id: jobsiteId,
-      building_id: buildingId,
-      id: id,
-    });
-    if (!idf) {
-      return res.status(404).json({
-        error: `No idf room exists with id ${id}!`,
-      });
-    } else {
-      req.idf = idf;
-      next();
-    }
-  } catch (err) {
-    res.status(500).json({
-      error: err.message,
-    });
-    throw err;
-  }
-};
-
 const findUnitById = async (req, res, next) => {
   const { userId, jobsiteId, buildingId, floorId, id } = req.params;
   try {
@@ -224,9 +209,9 @@ module.exports = {
   restricted,
   findUserById,
   findSupplyListById,
+  findJobsiteById,
   findBuildingById,
   findContactById,
   findFloorById,
-  findIdfById,
   findUnitById,
 };
