@@ -1,9 +1,11 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const User = require('../models/user');
+const Jobsite = require('../models/jobsite.js');
+const SupplyList = require('../models/supplyList.js');
 const Building = require('../models/building.js');
 const Contact = require('../models/contact.js');
 const Floor = require('../models/floor.js');
-const Idf = require('../models/idf.js');
 const Unit = require('../models/unit.js');
 
 const secrets = require('../config/secrets');
@@ -44,11 +46,75 @@ function generateToken(user) {
   return jwt.sign(payload, secrets.jwtSecret, options); // this method is synchronous
 }
 
-const findBuildingById = async (req, res, next) => {
-  const { id } = req.params;
+const findUserById = async (req, res, next) => {
+  const { user_id } = req.params;
   try {
-    const building = await Building.findById(id);
-    if (!building) {
+    const user = await User.findBy({ user_id: user_id });
+    if (Object.entries(user).length === 0) {
+      return res.status(404).json({
+        error: `No user exists with id ${user_id}!`,
+      });
+    } else {
+      req.user = user;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+    throw err;
+  }
+};
+
+const findSupplyListById = async (req, res, next) => {
+  const { id, userId } = req.params;
+  try {
+    const supplyList = await SupplyList.findBy({ id: id, user_id: userId });
+    if (Object.entries(supplyList).length === 0) {
+      return res.status(404).json({
+        error: `No supply list exists with id ${id}!`,
+      });
+    } else {
+      req.supplyList = supplyList;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+    throw err;
+  }
+};
+
+const findJobsiteById = async (req, res, next) => {
+  const { id, userId } = req.params;
+  try {
+    const jobsite = await Jobsite.findBy({ id: id, user_id: userId });
+    if (Object.entries(jobsite).length === 0) {
+      return res.status(404).json({
+        error: `No jobsite exists with id ${id}!`,
+      });
+    } else {
+      req.jobsite = jobsite;
+      next();
+    }
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+    throw err;
+  }
+};
+
+const findBuildingById = async (req, res, next) => {
+  const { id, userId, jobsiteId } = req.params;
+  try {
+    const building = await Building.findBy({
+      id: id,
+      user_id: userId,
+      jobsite_id: jobsiteId,
+    });
+    if (Object.entries(building).length === 0) {
       return res.status(404).json({
         error: `No building exists with id ${id}!`,
       });
@@ -65,10 +131,14 @@ const findBuildingById = async (req, res, next) => {
 };
 
 const findContactById = async (req, res, next) => {
-  const { id } = req.params;
+  const { id, userId, jobsiteId } = req.params;
   try {
-    const contact = await Contact.findById(id);
-    if (!contact) {
+    const contact = await Contact.findBy({
+      id: id,
+      user_id: userId,
+      jobsite_id: jobsiteId,
+    });
+    if (Object.entries(contact).length === 0) {
       return res.status(404).json({
         error: `No contact exists with id ${id}!`,
       });
@@ -92,7 +162,7 @@ const findFloorById = async (req, res, next) => {
       building_id: buildingId,
       id: id,
     });
-    if (!floor) {
+    if (Object.entries(floor).length === 0) {
       return res.status(404).json({
         error: `No floor exists with id ${id}!`,
       });
@@ -108,40 +178,17 @@ const findFloorById = async (req, res, next) => {
   }
 };
 
-const findIdfById = async (req, res, next) => {
-  const { jobsiteId, buildingId, id } = req.params;
-  try {
-    const idf = await Idf.findBy({
-      jobsite_id: jobsiteId,
-      building_id: buildingId,
-      id: id,
-    });
-    if (!idf) {
-      return res.status(404).json({
-        error: `No idf room exists with id ${id}!`,
-      });
-    } else {
-      req.idf = idf;
-      next();
-    }
-  } catch (err) {
-    res.status(500).json({
-      error: err.message,
-    });
-    throw err;
-  }
-};
-
 const findUnitById = async (req, res, next) => {
-  const { jobsiteId, buildingId, floorId, id } = req.params;
+  const { userId, jobsiteId, buildingId, floorId, id } = req.params;
   try {
     const unit = await Unit.findBy({
+      user_id: userId,
       jobsite_id: jobsiteId,
       building_id: buildingId,
       floor_id: floorId,
       id: id,
     });
-    if (!unit) {
+    if (Object.entries(unit).length === 0) {
       return res.status(404).json({
         error: `No unit exists with id ${id}!`,
       });
@@ -160,9 +207,11 @@ const findUnitById = async (req, res, next) => {
 module.exports = {
   generateToken,
   restricted,
+  findUserById,
+  findSupplyListById,
+  findJobsiteById,
   findBuildingById,
   findContactById,
   findFloorById,
-  findIdfById,
   findUnitById,
 };

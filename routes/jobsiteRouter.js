@@ -1,13 +1,14 @@
+const router = require('express').Router({ mergeParams: true });
+
 require('dotenv').config();
 
 const Jobsite = require('../models/jobsite');
 const bcrypt = require('bcryptjs');
 const express = require('express');
 
-const router = express();
-
 const buildingRouter = require('./buildingRouter');
 const contactRouter = require('./contactRouter');
+const { findJobsiteById } = require('../middleware');
 
 router.use(express.json());
 
@@ -16,21 +17,23 @@ router.use('/:jobsiteId/contacts', contactRouter);
 
 // GET Jobsite table
 router.get('/', async (req, res) => {
+  const { userId } = req.params;
   try {
-    const jobsites = await Jobsite.find();
-    console.log(jobsites);
-    res.json(jobsites);
+    const jobsites = await Jobsite.findBy({ user_id: userId });
+    if (Object.entries(jobsites).length != 0) {
+      res.status(200).json(jobsites);
+    } else {
+      res.status(404).json({ message: 'You must first add a jobsite' });
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 // GET Jobsite table with ID
-router.get('/:id', async (req, res) => {
-  const { id } = req.params;
+router.get('/:id', findJobsiteById, async (req, res) => {
+  const { jobsite } = req;
   try {
-    const jobsite = await Jobsite.findById(id);
-
     if (jobsite) {
       res.status(200).json(jobsite);
     } else {
@@ -43,17 +46,18 @@ router.get('/:id', async (req, res) => {
 
 // POST new Jobsite
 router.post('/', async (req, res) => {
+  const { userId } = req.params;
   const newJob = req.body;
-  if (Object.entries(newJob).length === 0 || !newJob.tracking_number) {
+  if (Object.entries(newJob).length === 0) {
     return res.status(400).json({
       error: 'Missing required property: tracking number',
     });
   }
   try {
-    const jobsite = await Jobsite.add(newJob);
+    const jobsite = await Jobsite.add({ user_id: userId, ...newJob });
     res.status(201).json(jobsite);
   } catch (err) {
-    res.status(500).json({ message: 'Failed to add new jobsite' });
+    res.status(500).json({ message: err.message });
   }
 });
 

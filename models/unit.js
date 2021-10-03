@@ -12,12 +12,12 @@ module.exports = {
 function find() {
   return db('units').select(
     'id',
+    'user_id',
     'jobsite_id',
     'building_id',
     'floor_id',
     'name',
-    'outlet_count',
-    'notes',
+    'scope_of_work',
     'complete'
   );
 }
@@ -36,22 +36,21 @@ function findById(id) {
   return db('units')
     .select(
       'id',
+      'user_id',
       'jobsite_id',
       'building_id',
       'floor_id',
       'name',
-      'outlet_count',
-      'notes',
+      'scope_of_work',
       'complete'
     )
     .where({ id })
     .first();
 }
 
-async function remove(id) {
+async function remove(id, userId) {
   try {
-    deletedUnit = await findById(id);
-    const getUnit = await db('units').where({ id }).del();
+    const getUnit = await db('units').where({ id: id, user_id: userId }).del();
     return getUnit ? getUnit : null;
   } catch {
     throw new Error(err);

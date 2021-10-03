@@ -2,22 +2,27 @@ const router = require('express').Router({ mergeParams: true });
 const Unit = require('../models/unit');
 const { findUnitById } = require('../middleware');
 
-// GET building table
+// GET unit table
 router.get('/', async (req, res) => {
-  const { jobsiteId, buildingId, floorId } = req.params;
+  const { userId, jobsiteId, buildingId, floorId } = req.params;
   try {
     const units = await Unit.findBy({
+      user_id: userId,
       jobsite_id: jobsiteId,
       building_id: buildingId,
       floor_id: floorId,
     });
-    res.status(200).json(units);
+    if (Object.entries(units).length === 0) {
+      return res.status(400).json({ error: 'You must first add a unit' });
+    } else {
+      res.status(200).json(units);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// GET building table with ID
+// GET unit table with ID
 router.get('/:id', findUnitById, async (req, res) => {
   const { unit } = req;
   try {
@@ -31,9 +36,11 @@ router.get('/:id', findUnitById, async (req, res) => {
   }
 });
 
-// POST new floor
+// Yeah
+
+// POST new unit
 router.post('/', async (req, res) => {
-  const { jobsiteId, buildingId, floorId } = req.params;
+  const { userId, jobsiteId, buildingId, floorId } = req.params;
   const newUnit = req.body;
   if (Object.entries(newUnit).length === 0) {
     return res.status(400).json({
@@ -42,6 +49,7 @@ router.post('/', async (req, res) => {
   }
   try {
     const unit = await Unit.add({
+      user_id: userId,
       jobsite_id: jobsiteId,
       building_id: buildingId,
       floor_id: floorId,
@@ -53,11 +61,11 @@ router.post('/', async (req, res) => {
       res.status(404).json({ message: 'Unit could not be added' });
     }
   } catch (err) {
-    res.status(500).json({ message: 'Failed to add new unit' });
+    res.status(500).json({ message: err.message });
   }
 });
 
-// EDIT building with ID
+// EDIT unit with ID
 router.put('/:id', async (req, res) => {
   const { id } = req.params;
   const changes = req.body;
@@ -76,11 +84,11 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// DEL request to with ID
+// DEL unit with ID
 router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+  const { id, userId } = req.params;
   try {
-    const deleted = await Unit.remove(id);
+    const deleted = await Unit.remove(id, userId);
 
     if (deleted) {
       res.status(200).json({ removed: deleted });

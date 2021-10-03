@@ -12,6 +12,7 @@ module.exports = {
 function find() {
   return db('jobsites').select(
     'id',
+    'user_id',
     'tracking_number',
     'name',
     'address',
@@ -31,20 +32,10 @@ async function add(jobsite) {
 
 function findById(id) {
   return db('jobsites')
-    .select('id', 'tracking_number', 'name', 'address', 'complete')
+    .select('id', 'user_id', 'tracking_number', 'name', 'address', 'complete')
     .where({ id })
     .first();
 }
-
-// async function findByJobId(jobId) {
-// 	const job = await db
-// 		.select(["tracking_number", "name", "email"])
-// 		.from("jobsite")
-// 		.leftJoin("jobsites", "couples.id", "weddings.couple_id")
-// 		.where("weddings.id", "=", jobId)
-// 		.first();
-// 	return job;
-// }
 
 async function remove(id) {
   try {

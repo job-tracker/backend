@@ -12,12 +12,10 @@ module.exports = {
 function find() {
   return db('buildings').select(
     'id',
+    'user_id',
     'jobsite_id',
-    'name',
-    // 'floor_count',
-    // 'unit_count',
-    // 'outlet_count',
-    // 'notes',
+    'address',
+    'scope_of_work',
     'complete'
   );
 }
@@ -36,12 +34,10 @@ function findById(id) {
   return db('buildings')
     .select(
       'id',
+      'user_id',
       'jobsite_id',
-      'name',
-      // 'floor_count',
-      // 'unit_count',
-      // 'outlet_count',
-      // 'notes',
+      'address',
+      'scope_of_work',
       'complete'
     )
     .where({ id })

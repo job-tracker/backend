@@ -12,12 +12,10 @@ module.exports = {
 function find() {
   return db('floors').select(
     'id',
+    'user_id',
     'jobsite_id',
     'building_id',
     'name',
-    'unit_count',
-    'outlet_count',
-    'notes',
     'complete'
   );
 }
@@ -34,16 +32,7 @@ async function add(floor) {
 
 function findById(id) {
   return db('floors')
-    .select(
-      'id',
-      'jobsite_id',
-      'building_id',
-      'name',
-      'unit_count',
-      'outlet_count',
-      'notes',
-      'complete'
-    )
+    .select('id', 'user_id', 'jobsite_id', 'building_id', 'name', 'complete')
     .where({ id })
     .first();
 }

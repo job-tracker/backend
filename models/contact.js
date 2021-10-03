@@ -12,8 +12,9 @@ module.exports = {
 function find() {
   return db('contacts').select(
     'id',
+    'user_id',
     'jobsite_id',
-    'title',
+    'job_title',
     'name',
     'phone_number'
   );
@@ -31,7 +32,7 @@ async function add(contact) {
 
 function findById(id) {
   return db('contacts')
-    .select('id', 'jobsite_id', 'title', 'name', 'phone_number')
+    .select('id', 'user_id', 'jobsite_id', 'job_title', 'name', 'phone_number')
     .where({ id })
     .first();
 }
