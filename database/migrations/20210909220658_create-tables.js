@@ -9,7 +9,6 @@ exports.up = function (knex) {
         tbl.integer('user_id').notNullable().unique();
         tbl.string('name').notNullable();
         tbl.string('email').notNullable().unique();
-        tbl.string('password').notNullable();
       })
 
       // Supply Lists
@@ -148,20 +147,13 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return (
-    knex.schema
-      // .dropTableIfExists('unit_notes')
-      .dropTableIfExists('units')
-      .dropTableIfExists('floors')
-      // .dropTableIfExists('service_room_notes')
-      // .dropTableIfExists('service_rooms')
-      // .dropTableIfExists('building_notes')
-      .dropTableIfExists('buildings')
-      // .dropTableIfExists('tasks')
-      .dropTableIfExists('jobsite_notes')
-      .dropTableIfExists('contacts')
-      .dropTableIfExists('jobsites')
-      .dropTableIfExists('supply_lists')
-      .dropTableIfExists('users')
-  );
+  return knex.schema
+    .dropTableIfExists('units')
+    .dropTableIfExists('floors')
+    .dropTableIfExists('buildings')
+    .dropTableIfExists('jobsite_notes')
+    .dropTableIfExists('contacts')
+    .dropTableIfExists('jobsites')
+    .dropTableIfExists('supply_lists')
+    .dropTableIfExists('users');
 };

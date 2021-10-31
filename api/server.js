@@ -5,7 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const session = require('express-session');
 const knexSessionStore = require('connect-session-knex')(session);
-const { auth } = require('express-openid-connect');
+const { auth, requiresAuth } = require('express-openid-connect');
 const server = express();
 
 //Import routes from the router file here

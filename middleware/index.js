@@ -49,11 +49,15 @@ function generateToken(user) {
 const findUserById = async (req, res, next) => {
   const { user_id } = req.params;
   try {
-    const user = await User.findBy({ user_id: user_id });
+    const authEmail = req.oidc.user.email;
+    const user = await User.findBy({ user_id: user_id, email: authEmail });
     if (Object.entries(user).length === 0) {
       return res.status(404).json({
         error: `No user exists with id ${user_id}!`,
       });
+      /* TODO: else if error handling edge case. If an attempt is made to access user_id,
+     (api/users/1001) without first signing in, it hits the catch. Handle it with a response 
+      msg that informs them they are not authorized. */
     } else {
       req.user = user;
       next();
