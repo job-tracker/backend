@@ -7,56 +7,32 @@ const Building = require('../models/building.js');
 const Contact = require('../models/contact.js');
 const Floor = require('../models/floor.js');
 const Unit = require('../models/unit.js');
+const jwt = require('express-jwt');
+const jwks = require('jwks-rsa');
 
 const secrets = require('../config/secrets');
 
-function restricted(req, res, next) {
-  const token = req.headers.authorization;
-
-  if (token) {
-    jwt.verify(token, secrets.jwtSecret, (err, decodedToken) => {
-      if (err) {
-        //Bad Token!
-        res
-          .status(401)
-          .json({ message: 'Houston, it appears our token is bad' });
-      } else {
-        //The token is a good token!
-        req.decodedJwt = decodedToken;
-        next();
-      }
-    });
-  } else {
-    res.status(401).json({ message: 'Houston, we dont have any valid tokens' });
-  }
-}
-
-function generateToken(user) {
-  const payload = {
-    subject: user.id,
-    email: user.email,
-    name: user.name,
-  };
-
-  const options = {
-    expiresIn: '1d',
-  };
-
-  // extract the secret away so it can be required and used where needed
-  return jwt.sign(payload, secrets.jwtSecret, options); // this method is synchronous
-}
+const verifyJwt = jwt({
+  secret: jwks.expressJwtSecret({
+    cache: true,
+    rateLimit: true,
+    jwksRequestsPerMinute: 5,
+    jwksUri: 'https://dev-facom-9o.us.auth0.com/.well-known/jwks.json',
+  }),
+  audience: 'this is a unique identifier',
+  issuer: 'https://dev-facom-9o.us.auth0.com/',
+  algorithms: ['RS256'],
+});
 
 const findUserById = async (req, res, next) => {
-  const { user_id } = req.params;
   try {
-    const authEmail = req.oidc.user.email;
     const user = await User.findBy({ user_id: user_id, email: authEmail });
     if (Object.entries(user).length === 0) {
       return res.status(404).json({
         error: `No user exists with id ${user_id}!`,
       });
       /* TODO: else if error handling edge case. If an attempt is made to access user_id,
-     (api/users/1001) without first signing in, it hits the catch. Handle it with a response 
+     (api/users/1001) without first signing in, it hits the catch. Handle it with a response
       msg that informs them they are not authorized. */
     } else {
       req.user = user;

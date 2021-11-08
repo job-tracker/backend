@@ -10,34 +10,6 @@ const server = express();
 
 //Import routes from the router file here
 const userRouter = require('../routes/userRouter');
-// const example2Router = require("../routers/example2Router");
-
-//Import the secrets file for jsonwebtoken here
-// const secrets = require("../config/secrets.js");
-
-//Import middleware to be used on routes for authentication here
-// const { restricted } = require("../middleware");
-
-//Insert Session options here
-// const sessionOptions = {
-//   name: "#{name of cookie for sessionOptions in server.js}",
-//   secret: secrets.jwtSecret,
-//   cookie: {
-//     maxAge: 1000 * 60 * 60,
-//     secure: false,
-//     httpOnly: true
-//   },
-//   resave: false,
-//   saveUninitialized: false,
-
-//   store: new knexSessionStore({
-//     knex: require("../database/config"),
-//     tablename: "sessions",
-//     sidfieldname: "sid",
-//     createtable: true,
-//     clearInterval: 1000 * 60 * 60
-//   })
-// };
 
 // Config for the auth function coming from express-openid-connect
 // https://github.com/auth0/express-openid-connect
